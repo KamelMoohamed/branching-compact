@@ -1,0 +1,1 @@
+# claude-branching-compact
