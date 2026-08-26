@@ -1,0 +1,14 @@
+# OS / editor cruft
+.DS_Store
+*.swp
+
+# Node
+node_modules/
+
+# script run artifacts
+*.jsonl.tmp
+*.jsonl.*.tmp
+turns.json
+
+# local agent config
+CLAUDE.md

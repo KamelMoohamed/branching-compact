@@ -1,0 +1,12 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "groupings": [
+    {
+      "title": "Session context",
+      "description": "Fork a long Claude Code session into a smaller one containing only the topical threads you choose.",
+      "skills": [
+        "branching-compact"
+      ]
+    }
+  ]
+}
