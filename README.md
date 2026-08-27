@@ -66,8 +66,9 @@ The original session is untouched and still has the full history.
 ```
 
 In a terminal, that command is the way in. In the desktop app the skill also registers the fork as a
-chat — but **the app must be restarted before it appears**, and it lands ungrouped rather than inside
-the parent chat's sidebar group. Until then, `claude --resume` still opens it.
+chat — but **the app must be restarted before it appears**, because the running app caches its chat
+list at startup. Once it does, it sits in the same sidebar group as the chat it came from, since the
+sidebar groups by working directory. Until then, `claude --resume` still opens it.
 
 ## Requirements
 

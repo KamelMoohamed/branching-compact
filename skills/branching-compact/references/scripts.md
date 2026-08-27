@@ -149,8 +149,8 @@ Two behaviours worth knowing:
 - **A restart is required.** The running app caches its chat list at startup and does not watch the
   registry directory, so a new entry appears only after the app restarts. Verified: an entry written
   mid-session was invisible to the app, and present after a restart.
-- **The fork lands ungrouped.** Sidebar grouping is app-side state, not a registry field, so the new
-  chat does not join its parent's sidebar group.
+- **It appears next to its parent.** The sidebar groups chats by working directory, and the entry
+  inherits `cwd` from the chat it was forked out of, so the fork lands in that same group.
 
 The script only ever creates a file, never edits one, and refuses to overwrite an existing entry. To
 undo a registration, delete the `local_<uuid>.json` it reports.

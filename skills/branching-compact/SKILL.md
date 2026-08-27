@@ -105,9 +105,10 @@ Then, depending on where you are:
 
 - **Registered** (`registered: true`): the chat appears in the sidebar under the title you gave it,
   **after the desktop app is restarted** — the running app caches its chat list and will not show it
-  before then. Say this explicitly; a user who does not restart will conclude the fork failed. It
-  lands **ungrouped**, not inside the parent chat's sidebar group, because the app stores grouping
-  outside the registry. Give `claude --resume <id>` as the way to open it without restarting.
+  before then. Say this explicitly; a user who does not restart will conclude the fork failed. The
+  sidebar groups chats by working directory, and the fork inherits the parent's `cwd`, so it appears
+  in the same group as the chat it came from. Give `claude --resume <id>` as the way to open it
+  without restarting.
 - **Not registered**: give the resume command as the way in:
   `claude --resume <new_session_id>`.
 
