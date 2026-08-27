@@ -146,9 +146,11 @@ failure: use `claude --resume` instead. Exit `1` is a real error, `2` bad usage.
 
 Two behaviours worth knowing:
 
-- **A new entry appears after a short delay, not instantly.** The app has no watcher on the registry
-  directory, so it picks up a new entry at its next scan — typically within about a minute, with no
-  restart. Verified: entries written while the app was running showed up on their own.
+- **A new entry appears only after the app restarts.** The session manager reads this directory once
+  during `initializeWithAccount()` and caches every entry in memory. That runs at app start and on an
+  account change, org change, or logout→login — there is no file watcher, no polling timer, and no
+  UI action that re-reads the directory. An entry written while the app is running is invisible until
+  the next launch. Use `claude --resume <id>` to open the fork before then.
 - **Edits to an already-loaded entry need a restart.** Once the app has an entry in memory it ignores
   later changes to the file. Verified by renaming a loaded entry on disk and reading back the old
   title. This is why the title has to be right when the entry is created.

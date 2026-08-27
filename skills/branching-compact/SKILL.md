@@ -105,11 +105,14 @@ Then, depending on where you are:
 
 - **Registered** (`registered: true`): the chat appears in the sidebar under the title you gave it,
   in the same group as the chat it came from (the sidebar groups by working directory, and the fork
-  inherits the parent's `cwd`). **It does not appear instantly** — the app has no watcher on the
-  registry, so it shows up at its next scan, typically within about a minute. Say this, or the user
-  will look immediately, see nothing, and conclude the fork failed. No restart is needed. To open it
-  right away instead of waiting, give `claude --resume <id>`, which works in any terminal including
-  the desktop app's built-in one.
+  inherits the parent's `cwd`) — but **only after the desktop app restarts**. The app reads this
+  registry once at startup and reloads it only on an account or org change, so a running app will
+  never show the fork. Say this plainly, or the user will look immediately, see nothing, and conclude
+  the fork failed.
+
+  Lead with the way to use the fork **now**, without restarting: `claude --resume <id>`, which works
+  in any terminal, including the desktop app's built-in one. Treat the sidebar entry as something
+  that shows up next time the app starts, not as the way in.
 - **Not registered**: give the resume command as the way in:
   `claude --resume <new_session_id>`.
 

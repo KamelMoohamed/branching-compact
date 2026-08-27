@@ -66,11 +66,13 @@ The original session is untouched and still has the full history.
 ```
 
 In a terminal, that command is the way in. In the desktop app the skill also registers the fork as a
-chat, in the same sidebar group as the chat it came from (the sidebar groups by working directory).
-**It takes a short while to show up** — the app has no watcher on its registry and picks the entry up
-at its next scan, usually within about a minute. No restart is needed. To open the fork immediately
-rather than waiting, use `claude --resume`, which works in any terminal including the app's built-in
-one.
+chat, in the same sidebar group as the chat it came from (the sidebar groups by working directory) —
+but **only from the app's next launch**. The app reads its session registry once at startup and
+reloads it only on an account or org change; there is no watcher, timer, or UI refresh, so a running
+app will not show the fork.
+
+To use the fork straight away, run `claude --resume <id>` — it works in any terminal, including the
+desktop app's built-in one. The sidebar entry is a convenience for later, not the way in.
 
 ## Requirements
 
