@@ -146,9 +146,12 @@ failure: use `claude --resume` instead. Exit `1` is a real error, `2` bad usage.
 
 Two behaviours worth knowing:
 
-- **A restart is required.** The running app caches its chat list at startup and does not watch the
-  registry directory, so a new entry appears only after the app restarts. Verified: an entry written
-  mid-session was invisible to the app, and present after a restart.
+- **A new entry appears after a short delay, not instantly.** The app has no watcher on the registry
+  directory, so it picks up a new entry at its next scan — typically within about a minute, with no
+  restart. Verified: entries written while the app was running showed up on their own.
+- **Edits to an already-loaded entry need a restart.** Once the app has an entry in memory it ignores
+  later changes to the file. Verified by renaming a loaded entry on disk and reading back the old
+  title. This is why the title has to be right when the entry is created.
 - **It appears next to its parent.** The sidebar groups chats by working directory, and the entry
   inherits `cwd` from the chat it was forked out of, so the fork lands in that same group.
 

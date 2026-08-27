@@ -66,9 +66,11 @@ The original session is untouched and still has the full history.
 ```
 
 In a terminal, that command is the way in. In the desktop app the skill also registers the fork as a
-chat — but **the app must be restarted before it appears**, because the running app caches its chat
-list at startup. Once it does, it sits in the same sidebar group as the chat it came from, since the
-sidebar groups by working directory. Until then, `claude --resume` still opens it.
+chat, in the same sidebar group as the chat it came from (the sidebar groups by working directory).
+**It takes a short while to show up** — the app has no watcher on its registry and picks the entry up
+at its next scan, usually within about a minute. No restart is needed. To open the fork immediately
+rather than waiting, use `claude --resume`, which works in any terminal including the app's built-in
+one.
 
 ## Requirements
 
