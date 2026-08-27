@@ -78,8 +78,14 @@ own registry, and a forked transcript that no registry entry points at is invisi
 Register it:
 
 ```bash
-node "<skill-dir>/scripts/register-desktop-session.mjs" "<new-session-id>" --title "<short topic> (forked)"
+node "<skill-dir>/scripts/register-desktop-session.mjs" "<new-session-id>"
 ```
+
+Omit `--title` and the fork inherits the parent chat's name with `(forked)` appended, which is what
+you usually want — the user finds it in the sidebar by looking for the chat it came from. Only pass
+`--title` when the user asks for a specific name, and even then keep the parent chat's name in it.
+Do **not** invent a topic label from the transcript's contents: a fork named after one thread inside
+it is unrecognisable next to the chat it was split off from.
 
 The script detects the host itself and exits 3 with `{"registered": false, "reason": "not-desktop"}`
 when this is not a desktop session — treat that as the terminal case below, not an error. It inherits

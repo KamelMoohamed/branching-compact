@@ -148,7 +148,9 @@ if (isMain) {
     const template = JSON.parse(fs.readFileSync(templateFile, 'utf8'));
     const entry = buildEntry(template, {
       cliSessionId: opts.forkId,
-      title: opts.title ?? `Fork of ${template.title ?? 'session'}`,
+      // Default to the parent chat's own name so the fork is recognisably
+      // related to it, rather than a topic label invented from its contents.
+      title: opts.title ?? `${template.title ?? 'Session'} (forked)`,
       cwd: opts.cwd,
     });
 
