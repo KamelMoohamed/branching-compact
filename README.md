@@ -23,7 +23,9 @@ session you can resume. The original session file is opened read-only and never 
 5. `build-fork.mjs` writes a new session file containing only the selected turns, in original order,
    plus the session preamble. Turn line ranges are copied whole, so a tool call is never separated
    from its result.
-6. You get the reduction percentage and a `claude --resume <id>` command.
+6. In the **desktop app**, `register-desktop-session.mjs` adds the registry entry that makes the fork
+   visible as a chat in your sidebar; in a **terminal** that step is skipped as unnecessary.
+7. You get the reduction percentage and a `claude --resume <id>` command.
 
 A turn starts at a *genuine* human message. That distinction matters more than it sounds: in Claude
 Code's transcript format, tool results also arrive as `role: "user"` messages, as do injected context
@@ -63,7 +65,9 @@ Forked 2 of 18 turns → 57.6% smaller (174 of 1,265 lines).
 The original session is untouched and still has the full history.
 ```
 
-The new session is a file on disk — resume it yourself when you're ready.
+In a terminal, that command is the way in. In the desktop app the skill also registers the fork as a
+chat — but **the app must be restarted before it appears**, and it lands ungrouped rather than inside
+the parent chat's sidebar group. Until then, `claude --resume` still opens it.
 
 ## Requirements
 
@@ -113,9 +117,9 @@ Install it for Claude Code across all your projects:
 npx skills add KamelMoohamed/claude-branching-compact --agent claude-code --global
 ```
 
-Drop `--global` to install into the current project instead. The CLI symlinks into your agent's skills
-directory by default; add `--copy` if you would rather have a real copy that survives deleting its
-checkout. Remove it with `npx skills remove branching-compact --global`.
+Drop `--global` to install into the current project instead. This copies the skill into
+`~/.claude/skills/branching-compact`, so it keeps working if you delete the checkout. Remove it with
+`npx skills remove branching-compact --global`.
 
 ### 3. Claude Code plugin marketplace
 
@@ -186,6 +190,9 @@ is best-effort against that. Specifically:
 - Forking rewrites `sessionId` on copied lines and re-anchors `parentUuid` links across dropped turns
   so the new session stays one walkable thread. How a given Claude Code version renders that fork is
   up to it.
+- Desktop registration reaches further still, into the app's own undocumented state directory. It is
+  additive — it only ever creates a `local_<uuid>.json`, never edits one — and the skill falls back to
+  the resume command wherever that registry isn't found. Delete the file it reports to undo it.
 
 **Treat your original session as the safety net** — which this workflow guarantees. The original is
 opened read-only and never written to, so a fork that comes out wrong costs you nothing: delete the

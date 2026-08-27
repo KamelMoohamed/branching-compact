@@ -71,16 +71,39 @@ Turn ids are comma-separated with no spaces. The script copies whole turn line r
 order, keeps the pre-turn preamble, rewrites `sessionId` to the new id, re-anchors `parentUuid` links
 across the dropped turns, and prints a JSON report. It refuses to write over the original.
 
-## 5. Report
+## 5. Open it
 
-From the report, tell the user:
+**Desktop app.** The desktop app does not build its chat list from `~/.claude/projects/`. It keeps its
+own registry, and a forked transcript that no registry entry points at is invisible in the sidebar.
+Register it:
+
+```bash
+node "<skill-dir>/scripts/register-desktop-session.mjs" "<new-session-id>" --title "<short topic> (forked)"
+```
+
+The script detects the host itself and exits 3 with `{"registered": false, "reason": "not-desktop"}`
+when this is not a desktop session — treat that as the terminal case below, not an error. It inherits
+cwd, model, permissions and MCP config from the current chat, and never modifies an existing entry.
+
+**Terminal.** Nothing to register — `claude --resume` reads the transcript directly.
+
+## 6. Report
+
+From the reports, tell the user:
 
 - the reduction percentage (`reduction_pct`), and kept vs original line counts
 - the new session id and its file path
-- the resume command: `claude --resume <new_session_id>`
 - that the original session is untouched and still holds the full history
 
-The new session is a file on disk, not the running session — the user has to resume it themselves.
+Then, depending on where you are:
+
+- **Registered** (`registered: true`): the chat appears in the sidebar under the title you gave it,
+  **after the desktop app is restarted** — the running app caches its chat list and will not show it
+  before then. Say this explicitly; a user who does not restart will conclude the fork failed. It
+  lands **ungrouped**, not inside the parent chat's sidebar group, because the app stores grouping
+  outside the registry. Give `claude --resume <id>` as the way to open it without restarting.
+- **Not registered**: give the resume command as the way in:
+  `claude --resume <new_session_id>`.
 
 ## Caveats
 
@@ -89,9 +112,12 @@ API**. It can change between Claude Code versions without warning, and this skil
 against it. The safety net is that the original session file is opened read-only and never modified,
 so a fork that turns out wrong costs nothing: delete the new `.jsonl` and resume the original.
 
+Desktop registration reaches further, into the app's own state directory, which is undocumented too.
+It only ever adds a file; to undo one, delete the `local_<uuid>.json` it reports.
+
 ## References
 
 - [references/transcript-format.md](references/transcript-format.md) — the on-disk layout, what
   counts as a genuine human message, and why `isMeta`/`isSidechain`/`tool_result` lines do not.
 - [references/scripts.md](references/scripts.md) — full arguments, output shapes, and exit codes for
-  both scripts.
+  all three scripts, including the desktop registry layout.

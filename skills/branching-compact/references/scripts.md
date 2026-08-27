@@ -107,6 +107,54 @@ Exit codes: `0` success, `1` runtime error, `2` bad usage.
 
 ---
 
+## `scripts/register-desktop-session.mjs`
+
+```
+node register-desktop-session.mjs <fork-session-id> --title "..." [--template <local_id>] [--cwd DIR]
+```
+
+The desktop app does not list chats by scanning `~/.claude/projects/`. It keeps its own registry —
+one JSON per chat — and each entry points at a transcript through `cliSessionId`:
+
+```
+macOS    ~/Library/Application Support/Claude/claude-code-sessions/<device>/<account>/local_<uuid>.json
+Linux    ~/.config/Claude/claude-code-sessions/...
+Windows  %APPDATA%/Claude/claude-code-sessions/...
+```
+
+A forked `.jsonl` that no entry points at resumes fine from a terminal but is invisible in the app.
+This script adds the missing entry.
+
+Detection and location both come from the environment the desktop app sets:
+
+- `CLAUDE_CODE_ENTRYPOINT` contains `desktop` when running inside the app.
+- `CLAUDE_CODE_HOST_SESSION_ID` is the current chat's registry id, so the script finds the registry
+  file directly instead of guessing the `<device>`/`<account>` directory names.
+
+That file is also the template: the fork inherits `cwd`, `originCwd`, `model`, `effort`,
+`permissionMode`, `chromePermissionMode`, `remoteMcpServersConfig` and `enabledMcpTools` from the
+chat it was forked out of. Everything else is set fresh, so no per-turn state or accumulated
+permission grants carry over. `--template` overrides the source entry; `--cwd` overrides the
+directory.
+
+Prints `{"registered": true, "desktop_session_id", "cli_session_id", "title", "cwd", "registry_file",
+"template_file"}` on success.
+
+Exits **3** with `{"registered": false, "reason": "..."}` when it cannot register — `not-desktop`,
+`no-host-session`, `registry-not-found`, or `collision`. That is the fall-through case, not a
+failure: use `claude --resume` instead. Exit `1` is a real error, `2` bad usage.
+
+Two behaviours worth knowing:
+
+- **A restart is required.** The running app caches its chat list at startup and does not watch the
+  registry directory, so a new entry appears only after the app restarts. Verified: an entry written
+  mid-session was invisible to the app, and present after a restart.
+- **The fork lands ungrouped.** Sidebar grouping is app-side state, not a registry field, so the new
+  chat does not join its parent's sidebar group.
+
+The script only ever creates a file, never edits one, and refuses to overwrite an existing entry. To
+undo a registration, delete the `local_<uuid>.json` it reports.
+
 ## Tests
 
 ```bash
