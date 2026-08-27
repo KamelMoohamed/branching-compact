@@ -103,7 +103,9 @@ From the reports, tell the user:
 
 Then, depending on where you are:
 
-- **Registered** (`registered: true`): the chat appears in the sidebar under the title you gave it,
+- **Registered** (`registered: true`): the report carries `restart_required: true` and a `notice`
+  string. **Show the user that notice — do not paraphrase it away or bury it.** The chat appears in
+  the sidebar under the title you gave it,
   in the same group as the chat it came from (the sidebar groups by working directory, and the fork
   inherits the parent's `cwd`) — but **only after the desktop app restarts**. The app reads this
   registry once at startup and reloads it only on an account or org change, so a running app will

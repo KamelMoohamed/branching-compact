@@ -170,6 +170,15 @@ if (isMain) {
         cwd: entry.cwd,
         registry_file: target,
         template_file: templateFile,
+        // The app reads this registry once at startup, so the entry cannot show
+        // up in a running app. Carried in the output rather than left to the
+        // caller to remember, because a user who is not told will assume the
+        // fork failed.
+        restart_required: true,
+        notice:
+          'Restart the Claude desktop app to see this chat in the sidebar — it reads its ' +
+          'session list only at startup. To use the fork right now without restarting, run: ' +
+          `claude --resume ${opts.forkId}`,
       }) + '\n'
     );
   } catch (err) {

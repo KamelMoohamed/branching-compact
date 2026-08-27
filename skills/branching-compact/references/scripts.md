@@ -137,8 +137,25 @@ chat it was forked out of. Everything else is set fresh, so no per-turn state or
 permission grants carry over. `--template` overrides the source entry; `--cwd` overrides the
 directory.
 
-Prints `{"registered": true, "desktop_session_id", "cli_session_id", "title", "cwd", "registry_file",
-"template_file"}` on success.
+Prints on success:
+
+```json
+{
+  "registered": true,
+  "desktop_session_id": "local_…",
+  "cli_session_id": "…",
+  "title": "Parent chat (forked)",
+  "cwd": "/path/to/project",
+  "registry_file": "…/local_….json",
+  "template_file": "…/local_….json",
+  "restart_required": true,
+  "notice": "Restart the Claude desktop app to see this chat in the sidebar — …"
+}
+```
+
+`restart_required` and `notice` are always present on success. The notice is meant to be shown to the
+user verbatim: without it, someone who looks at the sidebar immediately will conclude the fork
+failed.
 
 Exits **3** with `{"registered": false, "reason": "..."}` when it cannot register — `not-desktop`,
 `no-host-session`, `registry-not-found`, or `collision`. That is the fall-through case, not a
