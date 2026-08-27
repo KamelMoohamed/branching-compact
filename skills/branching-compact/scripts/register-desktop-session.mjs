@@ -62,26 +62,26 @@ export function appSupportDirs(home = os.homedir(), platform = process.platform)
   return [path.join(home, '.config', 'Claude'), path.join(home, '.claude-desktop')];
 }
 
-// Registry entries live at <appSupport>/claude-code-sessions/<device>/<account>/<id>.json.
+// Registry entries live at <appSupport>/claude-code-sessions/<accountId>/<orgId>/<id>.json.
 // Locate the template's file rather than guessing those two directory ids.
 export function findTemplateEntry(templateId, home = os.homedir(), platform = process.platform) {
   for (const base of appSupportDirs(home, platform)) {
     const root = path.join(base, 'claude-code-sessions');
-    let devices;
+    let accounts;
     try {
-      devices = fs.readdirSync(root);
+      accounts = fs.readdirSync(root);
     } catch {
       continue;
     }
-    for (const device of devices) {
-      let accounts;
+    for (const accountId of accounts) {
+      let orgs;
       try {
-        accounts = fs.readdirSync(path.join(root, device));
+        orgs = fs.readdirSync(path.join(root, accountId));
       } catch {
         continue;
       }
-      for (const account of accounts) {
-        const file = path.join(root, device, account, `${templateId}.json`);
+      for (const orgId of orgs) {
+        const file = path.join(root, accountId, orgId, `${templateId}.json`);
         if (fs.existsSync(file)) return file;
       }
     }

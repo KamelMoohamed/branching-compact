@@ -117,7 +117,7 @@ The desktop app does not list chats by scanning `~/.claude/projects/`. It keeps 
 one JSON per chat — and each entry points at a transcript through `cliSessionId`:
 
 ```
-macOS    ~/Library/Application Support/Claude/claude-code-sessions/<device>/<account>/local_<uuid>.json
+macOS    ~/Library/Application Support/Claude/claude-code-sessions/<accountId>/<orgId>/local_<uuid>.json
 Linux    ~/.config/Claude/claude-code-sessions/...
 Windows  %APPDATA%/Claude/claude-code-sessions/...
 ```
@@ -129,7 +129,7 @@ Detection and location both come from the environment the desktop app sets:
 
 - `CLAUDE_CODE_ENTRYPOINT` contains `desktop` when running inside the app.
 - `CLAUDE_CODE_HOST_SESSION_ID` is the current chat's registry id, so the script finds the registry
-  file directly instead of guessing the `<device>`/`<account>` directory names.
+  file directly instead of guessing the `<accountId>`/`<orgId>` directory names.
 
 That file is also the template: the fork inherits `cwd`, `originCwd`, `model`, `effort`,
 `permissionMode`, `chromePermissionMode`, `remoteMcpServersConfig` and `enabledMcpTools` from the
