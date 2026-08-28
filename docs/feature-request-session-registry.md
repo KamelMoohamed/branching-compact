@@ -14,7 +14,7 @@ the gap.
 
 ## Use case
 
-I wrote a skill, [`branching-compact`](https://github.com/KamelMoohamed/claude-branching-compact),
+I wrote a skill, [`branching-compact`](https://github.com/KamelMoohamed/branching-compact),
 that forks a long session instead of summarizing it. `/compact` collapses everything into a summary
 and discards the detail; a long session is usually several unrelated threads, and often only one is
 still worth continuing.

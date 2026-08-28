@@ -3,6 +3,9 @@
 Everything here was derived by reading real transcripts, not from documentation. Claude Code does not
 publish this format and is free to change it. Treat it as observed behaviour.
 
+This describes what `adapters/claude.mjs` knows. Nothing in `core/` depends on any of it; the Codex
+equivalent is [codex-transcript-format.md](codex-transcript-format.md).
+
 ## Where transcripts live
 
 ```
@@ -66,13 +69,14 @@ the *preamble* (session metadata, summary records) and are always carried into a
 JSON punctuation, base64 image payloads and metadata all count. It is good enough for relative
 weighting between turns, which is all the percentages claim to be.
 
-## Forking safely
+## Branching safely
 
-`build-fork.mjs` copies whole turn ranges into a new file and makes two edits so the result is
-resumable:
+`core/branching.mjs` copies whole turn ranges into a new file and the Claude adapter makes two edits
+so the result is resumable:
 
 - `sessionId` on every copied line is set to the new session's UUID.
 - Dropping turns leaves holes in the `uuid` → `parentUuid` chain. Any `parentUuid` pointing at a line
   that was not kept is re-anchored to the last kept line, so the fork stays one walkable thread.
 
-Nothing else is rewritten, line order is preserved, and the original file is opened read-only.
+Nothing else is rewritten, line order is preserved, and the original file is opened read-only. The
+new id is a v4 UUID, matching what Claude Code names its own sessions.

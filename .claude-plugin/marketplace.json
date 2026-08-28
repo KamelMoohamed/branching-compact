@@ -1,5 +1,5 @@
 {
-  "name": "claude-branching-compact",
+  "name": "branching-compact",
   "owner": {
     "name": "Kamel Mohamed",
     "url": "https://github.com/KamelMoohamed"
@@ -9,14 +9,26 @@
       "name": "branching-compact",
       "source": "./",
       "displayName": "Branching Compact",
-      "description": "Fork a long Claude Code session into a smaller one containing only the topical threads you choose, instead of summarizing everything away.",
-      "version": "0.1.0",
-      "author": { "name": "Kamel Mohamed", "url": "https://github.com/KamelMoohamed" },
-      "homepage": "https://github.com/KamelMoohamed/claude-branching-compact",
-      "repository": "https://github.com/KamelMoohamed/claude-branching-compact",
+      "description": "Branch a long Claude Code or Codex session into a smaller one containing only the topical threads you choose, instead of summarizing everything away.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Kamel Mohamed",
+        "url": "https://github.com/KamelMoohamed"
+      },
+      "homepage": "https://github.com/KamelMoohamed/branching-compact",
+      "repository": "https://github.com/KamelMoohamed/branching-compact",
       "license": "MIT",
       "category": "productivity",
-      "keywords": ["context", "compact", "session", "transcript", "fork"]
+      "keywords": [
+        "context",
+        "compact",
+        "session",
+        "transcript",
+        "branch",
+        "fork",
+        "codex",
+        "claude-code"
+      ]
     }
   ]
 }

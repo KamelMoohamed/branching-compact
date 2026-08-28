@@ -3,7 +3,7 @@
   "groupings": [
     {
       "title": "Session context",
-      "description": "Fork a long Claude Code session into a smaller one containing only the topical threads you choose.",
+      "description": "Branch a long Claude Code or Codex session into a smaller one containing only the topical threads you choose.",
       "skills": [
         "branching-compact"
       ]
